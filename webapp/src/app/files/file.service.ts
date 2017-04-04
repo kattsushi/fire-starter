@@ -1,6 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Http } from "@angular/http";
-import { FireLoopRef, Container } from '../shared/sdk/models';
+import { Container } from '../shared/sdk/models';
 import { RealTime, ContainerApi } from '../shared/sdk/services';
 import { Subscription } from 'rxjs/Subscription';
 import { FormService } from '../ui/form/ui-form.service';
@@ -17,14 +16,11 @@ export class FileService implements OnDestroy {
 
   public containers: Container[] = new Array<Container>();
   public filesToContainers: FilesToContainer[];
-  public: FireLoopRef<Container>;
   private subscriptions: Subscription[] = new Array<Subscription>();
 
   constructor(
     private formService: FormService,
-    private rt: RealTime,
     public containerApi: ContainerApi,
-    private http: Http
   ) {
     this.refresh();
   }
@@ -34,19 +30,19 @@ export class FileService implements OnDestroy {
   }
 
   setFilesToContainers(): void {
-    let newMapping: FilesToContainer[] = [];
+    const newMapping: FilesToContainer[] = [];
     this.containers.forEach(container => {
       this.subscriptions.push(
         this.containerApi.getFiles(container.name).subscribe(
           (files: any[]) => {
             files.forEach(file => {
-              let containerUrl = this.getUploadUrl(container.name).replace('upload', 'download');
+              const containerUrl = this.getUploadUrl(container.name).replace('upload', 'download');
               file.url = containerUrl + '/' + file.name;
-              let fileExt = split(file.name, '.', 2)[1];
+              const fileExt = split(file.name, '.', 2)[1];
               file.ext = fileExt;
             });
             sortBy(files, 'name');
-            let row = {
+            const row = {
               container: container,
               files: files
             };

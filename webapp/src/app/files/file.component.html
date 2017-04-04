@@ -1,7 +1,7 @@
 <!-- FILES -->
 <app-card icon="files-o" title="Files" [createButton]="fileService.getCardButtons()" (action)="create()">
   <div class="row">
-    <div class="col-12 col-lg-8">
+    <div class="col-12">
       <table class="table table-striped table-sm">
         <thead>
           <tr>
@@ -39,16 +39,7 @@
         </tbody>
       </table>
     </div>
-    <div class="col-12 col-lg-4">
-      <div class="embed-responsive embed-responsive-16by9">
-        <iframe class="embed-responsive-item" src="//youtube.com/embed/jsB-PwkhXV8" allowfullscreen></iframe>
-      </div>
-    </div>
   </div>
-</app-card>
-<!-- RECORD -->
-<app-card icon="microphone" title="Record" [createButton]="fileService.getCardButtons('record')">
-
 </app-card>
 <!-- UPLOAD -->
 <div class="card">

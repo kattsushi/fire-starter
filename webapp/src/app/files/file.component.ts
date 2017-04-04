@@ -5,7 +5,7 @@ import { FileFormComponent } from './file-form.component';
 import { FileService } from './file.service';
 import { UIService } from '../ui/ui.service';
 import { Subscription } from 'rxjs/Subscription';
-import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
+import { FileUploader } from 'ng2-file-upload';
 
 @Component({
   selector: 'app-file',
@@ -16,15 +16,11 @@ export class FileComponent implements OnDestroy {
 
   private modalRef;
   private files;
-  private loadingSample: boolean;
-  private audioBuffer: AudioBuffer;
-  private audioContext: AudioContext;
   private uploadContainer: Container = new Container();
   private subscriptions: Subscription[] = new Array<Subscription>();
   public uploadUrl: string = null;
   public uploader: FileUploader = new FileUploader({});
   public hasBaseDropZoneOver: boolean = false;
-  public hasAnotherDropZoneOver: boolean = false;
 
   constructor(
     private modal: NgbModal,
@@ -48,10 +44,6 @@ export class FileComponent implements OnDestroy {
 
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
-  }
-
-  public fileOverAnother(e: any): void {
-    this.hasAnotherDropZoneOver = e;
   }
 
   create() {
@@ -134,10 +126,9 @@ export class FileComponent implements OnDestroy {
       case 'getFiles':
         this.subscriptions.push(this.fileService.containerApi
           .getFiles(event.payload).subscribe((files: any) => {
-            console.log(files);
             return files;
           }, (err) => {
-            console.log(err);
+            this.uiService.toastError('Get Files Failed', err.message || err.error.message);
           },
         ));
         break;
